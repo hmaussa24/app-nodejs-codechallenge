@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "5435:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -23,3 +23,14 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  #api:
+   # build:
+    #  context: .
+     # dockerfile: ./apps/app-nodejs-codechallenge/Dockerfile
+   # depends_on:
+    #  - kafka
+    #environment:
+     # KAFKA_BROKER: kafka:9092
+    #ports:
+    #  - "3000:3000"
