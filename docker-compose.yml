@@ -8,6 +8,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -26,7 +29,7 @@ services:
     ports:
       - 9092:9092
   app-nodejs-codechallenge:
-    depends_on: [kafka]
+    depends_on: [postgres,kafka]
     build:
       context: .
       dockerfile: ./apps/app-nodejs-codechallenge/Dockerfile
@@ -42,3 +45,5 @@ services:
 networks:
   default:
     name: kafka-network
+volumes:
+  postgres_data:
