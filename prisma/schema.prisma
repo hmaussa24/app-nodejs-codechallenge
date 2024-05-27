@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@postgres_db/yape_db?schema=public"
+  url      = "postgresql://postgres:postgres@localhost:5435/yape_db?schema=public"
 }
 
 
