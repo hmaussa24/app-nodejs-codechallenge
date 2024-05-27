@@ -21,7 +21,7 @@ A database is created in PostgreSQL, an application that contains a REST API whe
 
 # Run
 
-1. You just need to navigate to the root directory and run the command ```docker compose up```. This will start the Kafka and PostgreSQL servers, start the API and the Antifraud microservice
+1. You just need to navigate to the root directory and run the command ```docker compose up --build```. This will start the Kafka and PostgreSQL servers, create the database, and create the transaccion table, start the API service and the Antifraud microservice
 
 ## curl´s
 1. Create transaction
@@ -65,7 +65,7 @@ A database is created in PostgreSQL, an application that contains a REST API whe
 
 <img width="1440" alt="Captura de pantalla 2024-05-26 a la(s) 11 58 13 p  m" src="https://github.com/hmaussa24/app-nodejs-codechallenge/assets/60824470/f5864387-2a9b-407b-8a9f-f822ff5bee6e">
 
-2. Run Prisma migrations after starting the services with ``` npx prisma migrate dev --name init ``` This creates the database and the tables. remember to modify the URL
+2. If for any reason running the command ``` docker compose up --build ``` does not create the databases, remember that you can create them manually by running the command ``` npx prisma migrate dev --name init ``` in the project directory.
 
 ``` url      = "postgresql://postgres:postgres@localhost:5435/yape_db?schema=public" ```
 
