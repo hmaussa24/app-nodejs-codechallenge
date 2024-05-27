@@ -21,7 +21,7 @@ A database is created in PostgreSQL, an application that contains a REST API whe
 
 # Run
 
-1. You just need to navigate to the root directory and run the command ```docker compose up```. This will start the Kafka and PostgreSQL servers, create the database, and start the API and the Antifraud microservice
+1. You just need to navigate to the root directory and run the command ```docker compose up --build```. This will start the Kafka and PostgreSQL servers, create the database, and start the API and the Antifraud microservice
 
 ## curl´s
 1. Create transaction
