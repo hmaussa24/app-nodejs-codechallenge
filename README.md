@@ -65,13 +65,13 @@ A database is created in PostgreSQL, an application that contains a REST API whe
 
 <img width="1440" alt="Captura de pantalla 2024-05-26 a la(s) 11 58 13 p  m" src="https://github.com/hmaussa24/app-nodejs-codechallenge/assets/60824470/f5864387-2a9b-407b-8a9f-f822ff5bee6e">
 
-2. Run Prisma migrations after starting the services with ``` npx prisma migrate dev --name init ``` This creates the database and the tables. recuerda modifica la 
+2. Run Prisma migrations after starting the services with ``` npx prisma migrate dev --name init ``` This creates the database and the tables. remember to modify the URL
 
 ``` url      = "postgresql://postgres:postgres@localhost:5435/yape_db?schema=public" ```
 
- y luego dejala como estaba
+and then leave it as it was
 
  ``` url      = "postgresql://postgres:postgres@postgres_db/yape_db?schema=public" ```
- 
+
     
 <img width="1038" alt="Captura de pantalla 2024-05-26 a la(s) 11 59 50 p  m" src="https://github.com/hmaussa24/app-nodejs-codechallenge/assets/60824470/8278b4d9-06f5-43b0-ba64-07033bc56d0f">
