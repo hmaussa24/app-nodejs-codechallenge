@@ -23,7 +23,7 @@ import { AntifraudService } from './antifraud-service.service';
               ),
               retry:{
                 retries: 8,
-                initialRetryTime: 1000
+                initialRetryTime: 3000
               },
               brokers: configService
                 .get<string>('KAFKA_BROKERS', 'kafka:29092')

@@ -11,6 +11,10 @@ export class AntifraudService  implements OnModuleInit{
       client: {
         clientId: 'antifraud',
         brokers: ['kafka:29092'],
+        retry: {
+          retries: 8,
+          initialRetryTime: 3000,
+        }
       },
       consumer: {
         groupId: 'transaction-consumer',

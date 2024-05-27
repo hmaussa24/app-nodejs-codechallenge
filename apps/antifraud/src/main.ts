@@ -8,6 +8,10 @@ async function bootstrap() {
     options: {
       client: {
         brokers: ['kafka:29092'],
+        retry: {
+          retries: 8,
+          initialRetryTime: 3000
+        }
       },
       consumer:{
         groupId: 'transaction-consumer',

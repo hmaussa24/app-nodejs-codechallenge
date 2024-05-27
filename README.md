@@ -1,82 +1,61 @@
-# Yape Code Challenge :rocket:
-
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Yape Solution Challenge :rocket: :smile:
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
-- [Problem](#problem)
+- [Solution](#problem)
 - [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
 
-# Problem
+# Solution
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+1. ## Architecture:
+   
+<img width="1227" alt="Captura de pantalla 2024-05-26 a la(s) 10 52 29 p  m" src="https://github.com/hmaussa24/app-nodejs-codechallenge/assets/60824470/af9d25bc-b5f3-438e-8d3e-1ad1971f416d">
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+A database is created in PostgreSQL, an application that contains a REST API where transaction creation requests are received and saved in the database with the status "pending" and a "producer" that sends an event to the queue of transactions to be processed. The other part is a microservice called Antifraud that reads the queue of transactions to be processed, processes them, and sends them to the queue of processed transactions with the status "rejected" or "approved" as appropriate. Lastly, we have a consumer that reads the queue of processed transactions and updates the status of the transaction in the database. We also have an endpoint in the API to query transactions by their "id"
 
 # Tech Stack
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+1. ## NestJS
+2. ## PortgreSQL
+3. ## Kafka
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+# Run
 
-You must have two resources:
+1. You just need to navigate to the root directory and run the command ```docker compose up```. This will start the Kafka and PostgreSQL servers, create the database, and start the API and the Antifraud microservice
 
-1. Resource to create a transaction that must containt:
+## curl´s
+1. Create transaction
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+```
+  curl --location 'http://localhost:3000/' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "100051" ,
+  "accountExternalIdCredit": "100051",
   "tranferTypeId": 1,
-  "value": 120
-}
+  "value": 200,
+  "status": "pending"
+}'
+
 ```
 
-2. Resource to retrieve a transaction
+<img width="974" alt="Captura de pantalla 2024-05-26 a la(s) 11 13 28 p  m" src="https://github.com/hmaussa24/app-nodejs-codechallenge/assets/60824470/09e9100b-ac3a-40e3-b8f1-a15f0c3547d4">
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+
+2. Get transaction
+
+   
+  <img width="918" alt="Captura de pantalla 2024-05-26 a la(s) 11 14 00 p  m" src="https://github.com/hmaussa24/app-nodejs-codechallenge/assets/60824470/c99d2145-0b2c-4bf9-b10c-d6abb790ade7">
+
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+  
+ curl --location --request GET 'http://localhost:3000/1' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "100051" ,
+  "accountExternalIdCredit": "100051",
+  "tranferTypeId": 1,
+  "value": 200,
+  "status": "pending"
+}'
+```
