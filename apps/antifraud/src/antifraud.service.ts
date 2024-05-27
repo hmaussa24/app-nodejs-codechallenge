@@ -1,6 +1,5 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, ClientProxy, Transport } from '@nestjs/microservices';
-import { Prisma } from '@prisma/client';
 import { Staus, Transaction } from './dto/transactionDto';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class AntifraudService  implements OnModuleInit{
     options: {
       client: {
         clientId: 'antifraud',
-        brokers: ['localhost:9092'],
+        brokers: ['kafka:29092'],
       },
       consumer: {
         groupId: 'transaction-consumer',

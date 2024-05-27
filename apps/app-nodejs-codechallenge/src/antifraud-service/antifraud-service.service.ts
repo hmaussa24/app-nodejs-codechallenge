@@ -9,8 +9,8 @@ export class AntifraudService {
 
     constructor() {
         this.kafka = new Kafka({
-            brokers: ["localhost:9092"], retry: {
-                initialRetryTime: 100, retries: 8
+            brokers: [process.env.KAFKA_BROKER], retry: {
+                initialRetryTime: 1000, retries: 8
             }
         });
     }

@@ -1,20 +1,22 @@
-# Usa la imagen oficial de Node.js como base
-FROM node:20
-
-# Establece el directorio de trabajo
-WORKDIR /app
-
-# Copia los archivos package.json y package-lock.json del monorepo
-COPY ../../package*.json ./
-
-# Instala las dependencias del monorepo
+FROM node:18 as build
+WORKDIR /usr/src/app
+COPY package.json .
+COPY package-lock.json .
 RUN npm install
-
-# Copia el código fuente del servicio específico
 COPY . .
+RUN npx prisma generate
+RUN npm run build antifraud
 
-# Expone el puerto solo si es necesario para acceder externamente
+FROM node:18-slim
+RUN apt update && apt install libssl-dev dumb-init -y --no-install-recommends
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/.env .env
+COPY --chown=node:node --from=build /usr/src/app/package.json .
+COPY --chown=node:node --from=build /usr/src/app/package-lock.json .
+RUN npm install --omit=dev
+COPY --chown=node:node --from=build /usr/src/app/node_modules/.prisma/client  ./node_modules/.prisma/client
+
+ENV NODE_ENV production
 EXPOSE 3000
-
-# Comando para ejecutar la aplicación
-CMD ["npm", "run", "start"]
+CMD ["dumb-init", "node", "dist/apps/antifraud/main"]

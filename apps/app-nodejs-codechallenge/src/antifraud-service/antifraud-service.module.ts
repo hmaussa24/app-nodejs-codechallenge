@@ -21,8 +21,12 @@ import { AntifraudService } from './antifraud-service.service';
                 'KAFKA_CLIENT_ID',
                 'app-gateway'
               ),
+              retry:{
+                retries: 8,
+                initialRetryTime: 1000
+              },
               brokers: configService
-                .get<string>('KAFKA_BROKERS', 'localhost:9092')
+                .get<string>('KAFKA_BROKERS', 'kafka:29092')
                 .split(','),
             },
             consumer: {
